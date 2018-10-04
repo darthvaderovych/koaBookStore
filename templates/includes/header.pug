@@ -1,0 +1,29 @@
+header
+  nav.navbar.navbar-expand-md.navbar-light.bg-light 
+        a.navbar-brand(href='/') BookStore 
+          i.fa.fa-book(aria-hidden='true')
+        button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        #navbarSupportedContent.collapse.navbar-collapse.justify-content-end
+          ul.navbar-nav
+            li.nav-item.active
+              a.nav-link(href='/shopping-cart')
+                i.fa.fa-shopping-cart(aria-hidden='true')
+                |  Shopping Cart
+                span#newCartQty
+                if cartQty > 0
+                  span#cartQty.badge.badge-pill.badge-secondary.ml-1 #{cart.totalQty}
+            li.nav-item.dropdown.active
+              a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                i.fa.fa-user(aria-hidden='true')
+                |  User
+              .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdown')
+                if login
+                  a.dropdown-item(href='/user/profile') Account
+                  .dropdown-divider
+                  a.dropdown-item(href='/user/logout') Logout
+                else 
+                  a.dropdown-item(href='/user/register') Register
+                  .dropdown-divider
+                  a.dropdown-item(href='/user/signin') Sign in
+

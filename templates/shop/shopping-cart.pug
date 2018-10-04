@@ -1,0 +1,45 @@
+extends ../layout
+block body
+
+	if totalPrice 
+			#cartNotif.row.justify-content-center
+			.row.justify-content-center.emptyCart
+				.col-md-6
+					ul.list-group.list-group.my-4
+						each product in products
+							li#item.list-group-item
+								.row
+									.col-md-8
+										.row
+										strong #{product.item.title}
+										span.itemPrice.badge.badge-light.mx-2(data-toggle='tooltip', data-placement='top', title='price') $ #{product.item.price}
+										span.itemQty.badge.badge-secondary.badge-pill.ml-1(data-toggle='tooltip', data-placement='top', title='quantity') #{product.qty}
+
+									.col-md-2.text-center
+										-var url = product.item._id
+										a.ajaxAddOne(href='/add/' + url, data-toggle='tooltip', data-placement='top', title='add more')
+											i.fa.fa-plus.fa-black
+										a.ajaxReduceOne(href='/reduce/' + url, data-toggle='tooltip', data-placement='top', title='reduce')
+											i.fa.fa-minus.mx-2.fa-black
+										a.ajaxRemoveAll(href='/remove/' + url, data-toggle='tooltip', data-placement='top', title='remove')
+											i.fa.fa-trash.fa-black
+									.col-md-2.text-center
+										span.itemTotalPrice.badge.badge-info.ml-2(data-toggle='tooltip', data-placement='top', title='total') $ #{product.price}
+
+
+
+			.row.justify-content-center.emptyCart
+				.col-sm-6.col-md-6
+					strong#cartTotalPrice Total: $ #{totalPrice}
+
+			hr
+			.row.justify-content-center.emptyCart
+				.col-sm-6.col-md-6
+					a.btn.btn-secondary(href='/checkout', type='button') Checkout
+	else
+		.row.justify-content-center
+			.col-sm-6.col-md-6
+				h1.text-center.mt-3
+					i.fa.fa-shopping-cart
+				h2.text-center.mt-1 Your Cart is empty
+				h4.text-center Click <a href='/'>here</a> to continue shopping

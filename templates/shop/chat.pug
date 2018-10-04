@@ -1,0 +1,131 @@
+extends ../layout
+block body
+
+	.container
+		//- .row.justify-content-center
+		//- 	.col-md-4
+		//- 		h2.text-center.mt-2 #{product.title}
+		//- 		h4.text-center.mt-2 by #{product.author}
+		#userFormArea.row.justify-content-center.mt-3
+			.col-md-4
+				form#userForm
+					.form-group
+						h4.text-center Enter your nickname
+						input#username.form-control
+						br
+						input.btn.btn-primary.btn-block(type='submit', value='Submit')
+							 	
+		#messageArea.row
+
+
+
+
+			.col-9.float-left
+				ul#message-list.list-group.my-2
+					#chat
+
+				form#messageForm
+					.form-group
+						textarea#message.form-control(placeholder="Enter message")
+						br
+						input.btn.btn-primary(type='submit', value='Send Message')
+
+			.col-3.float-right
+				h3 Online Users
+				ul#users.list-group
+
+
+			
+
+	script(src='/socket.io/socket.io.js')
+	script.
+		$(function(){
+			const socket = io();
+			const $messageForm = $('#messageForm');
+			let $message = $('#message');
+			let $chat = $('#chat');
+			let $messageArea = $('#messageArea');
+			let $userFormArea = $('#userFormArea');
+			let $userForm = $('#userForm');
+			let $users = $('#users');
+			let $username = $('#username');
+
+
+			$messageForm.submit(function(e) {
+				e.preventDefault();
+				socket.emit('send message', $message.val());
+				$message.val('');
+			});
+
+			socket.on('new message', function(data){
+			$chat.append('<div class="well"><strong>'+ data.user+': </strong>'+data.msg+'</div>');
+			});
+
+			$userForm.submit(function(e) {
+				e.preventDefault();
+				socket.emit('new user', $username.val(), function(data){
+					if(data) {
+						$userFormArea.hide();
+						$messageArea.show();
+					}
+				});
+				$username.val('');
+			});
+
+			socket.on('get users', function(data){
+				let html = '';
+				for(i = 0; i < data.length; i++){
+					html += '<li class="list-group-item">'+data[i]+'</li>';
+				}
+				$users.html(html);
+			})
+
+			socket.on('chat history', function(data){
+				$chat.find('div').remove();
+				$.each(data, function() {
+					$chat.append('<div class="well"><strong>'+this.nickname+': </strong>'+this.message+'</div>');
+				})
+			})
+		})
+
+
+
+
+	//- script(src="/socket.io/socket.io.js")
+
+	//- script.
+		//- const socket = io();
+
+		//- function showStatus(status, message) {
+		//- 	document.querySelector('[data-status]').innerHTML = message || status;
+		//- 	document.querySelector('[data-status]').setAttribute('data-status', status);
+		//- }
+
+		//- socket.on('error', function(message) {
+		//- 	console.log(message);
+		//- 	showStatus('error', message);
+		//- });
+
+		//- let emit = socket.emit;
+		//- socket.emit = function(event) {
+		//- 	console.log(event);
+		//- 	return emit.apply(this, arguments);
+		//- };
+
+		//- socket.on('logout', function(data) {
+		//- 	socket.disconnect();
+		//- 	alert("You logged out");
+		//- 	window.location.reload();
+		//- })
+
+		//- socket.on('message', function(message, cb) {
+		//- 	console.log(message);
+		//- 	cb("from client");
+		//- });
+
+		//- socket.on('welcome', (msg) => console.log(msg));
+
+
+	//- h1 Welcome
+
+	//- p You are logged in.

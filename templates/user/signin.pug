@@ -1,0 +1,32 @@
+extends ../layout
+block body
+	.row.justify-content-md-center
+		.col-md-4
+			h1.text-center Sign In
+			each messages, type in flash
+				- if (type == 'error') type = 'danger' // bootstrap class
+				each message in messages
+					div(class="alert alert-" + type)!= message
+	.row.justify-content-md-center
+		.col-md-4
+			form(action='/user/signin', method='post').form-signin
+				.form-group
+					label(for='email') Email
+					input(type='email', id='email', name='email', placeholder='Enter email').form-control
+				.form-group
+					label(for='password') Password
+					input(type='password', id='password', name='password',placeholder='Enter password').form-control
+					input(type='hidden', name='_csrf' value=csrf)
+				button(type='submit').btn.btn-primary.btn-block.mb-2 Sign In
+	.row.justify-content-md-center
+		.col-md-4
+			h3.text-center.mt-2 Sign In with social netwok
+			.row
+				.col-md-4.text-right
+					a(href='/auth/facebook').fa.fa-2x.fa-social.fa-facebook.hoverable
+				.col-md-4.text-center
+					a(href='/auth/google').fa.fa-2x.fa-social.fa-google
+				.col-md-4.text-left
+					a(href='/auth/github').fa.fa-2x.fa-social.fa-github
+
+

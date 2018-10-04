@@ -1,0 +1,63 @@
+extends ../layout
+block body
+	.row.justify-content-center
+		.col-sm-6.col-md-4.text-center
+			h1 Checkout
+			h4 Your Total: #{totalPrice}
+
+		each messages, type in flash
+			- if (type == 'error') type = 'danger'
+			- if (type == 'success') type = 'success'
+			each message in messages
+				div(class="alert alert-" + type )!= message
+	.row.justify-content-center
+		.col-md-4
+			form#checkout-form(action='/checkout', method='post')
+				.form-group
+					label(for='name') Name
+					input#name.form-control(type='text', required='', name='name')
+				.form-group
+					label(for='address') Address
+					input#address.form-control(type='text', required='', name='address')
+				.form-group
+					label(for='card-name') Card holder name
+					input#card-name.form-control(type='text', required='')
+				.form-group
+					label(for='card-number') Card number
+					input#card-number.form-control(type='text', required='')
+				.form-row
+					.form-group.col-md-6
+						label(for='card-expiry-month') Expiration month
+										//- input#card-expiry-month.form-control(type='text', required='')
+						select#card-expiry-month.form-control
+							option 01
+							option 02
+							option 03
+							option 04
+							option 05
+							option 06
+							option 07
+							option 08
+							option 09
+							option 10
+							option 11
+							option 12
+					.form-group.col-md-6
+						label(for='card-expiry-year') Expiration year
+										//- input#card-expiry-year.form-control(type='text', required='')
+						select#card-expiry-year.form-control
+							option 2018
+							option 2019
+							option 2020
+							option 2021
+							option 2022
+							option 2023
+							option 2024
+							option 2025
+				.form-group
+					label(for='card-cvc') CVV
+					input#card-cvc.form-control(type='text', required='')
+					input(type='hidden', name='_csrf' value=csrf)
+				button.btn.btn-success.btn-block.mb-5(type='submit') Buy now
+	script(type='text/javascript', src='https://js.stripe.com/v2/')
+	script(type='text/javascript', src='javascripts/checkout.js')

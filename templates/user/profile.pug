@@ -1,0 +1,21 @@
+extends ../layout
+block body
+	.row.justify-content-md-center
+		.col-md-8
+			h2 User Profile
+			hr
+			h3 My Orders
+			each order in orders
+				.card.bg-light.mb-2
+					.card-body
+						ul.list-group
+							each item in order.items
+								li.list-group-item
+									strong
+										p #{item.item.title} | #{item.qty} 
+											span.badge.badge-secondary $ #{item.price}
+
+					.card-footer
+						strong
+							p Total Price: $#{order.cart.totalPrice}
+
